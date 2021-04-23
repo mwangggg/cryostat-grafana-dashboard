@@ -7,11 +7,11 @@ RUN grafana-cli plugins install grafana-simple-json-datasource
 COPY --chown=grafana:root \
 	dashboards.yaml \
 	dashboard.json \
-	/etc/grafana/provisioning/dashboards
+	/etc/grafana/provisioning/dashboards/
 
 COPY --chown=grafana:root \
     datasource.yaml \
-    /etc/grafana/provisioning/datasources
+    /etc/grafana/provisioning/datasources/
 
 # Listen address of jfr-datasource
 ENV JFR_DATASOURCE_URL "http://0.0.0.0:8080"

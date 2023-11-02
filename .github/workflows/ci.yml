@@ -19,7 +19,7 @@ jobs:
       CRYOSTAT_GRAFANA_IMG: quay.io/cryostat/cryostat-grafana-dashboard
     steps:
     - uses: actions/checkout@v2
-    - name: Install qemu
+    - name: Install qemu arh
       continue-on-error: false
       run: |
         sudo apt-get update

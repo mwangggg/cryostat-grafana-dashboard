@@ -29,7 +29,7 @@ jobs:
       id: check-branch
       run: |
         if [[ ${REF_NAME} == cryostat-v* ]]; then
-          echo "image-tag=${REF_NAME:10}.0" >> $GITHUB_OUTPUT
+          echo "image-tag=${REF_NAME:10} ${REF_NAME:10}.0 ${REF_NAME:10}.1" >> $GITHUB_OUTPUT
         else
           echo "image-tag=${REF_NAME}" >> $GITHUB_OUTPUT
         fi

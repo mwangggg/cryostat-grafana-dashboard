@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CRYOSTAT_GRAFANA_IMG: quay.io/cryostat/cryostat-grafana-dashboard
-      REF_NAME: ${{ github.ref_name }}
     steps:
     - uses: actions/checkout@v2
     - name: Install qemu
@@ -25,10 +24,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y qemu-user-static
-    - name: Create image tag
-      id: image-tag
-      if: startsWith(${{ github.ref_name }}, 'cryostat-v')
-      run: echo "tag=${REF_NAME:10}.0" >> $GITHUB_OUTPUT
     - name: Build container images and manifest
       id: buildah-build
       uses: redhat-actions/buildah-build@v2

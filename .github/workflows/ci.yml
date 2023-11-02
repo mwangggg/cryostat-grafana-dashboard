@@ -28,7 +28,7 @@ jobs:
     - name: check release branch
       id: check-branch
       run: |
-        if [[ ${REF_NAME} == cryostat.v*]]; then
+        if [[ ${REF_NAME} == cryostat.v* ]]; then
           echo "image-tag=${REF_NAME:10}.0" >> $GITHUB_OUTPUT
         else
           echo "image-tag=${REF_NAME}" >> $GITHUB_OUTPUT

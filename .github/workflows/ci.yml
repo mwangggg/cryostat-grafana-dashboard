@@ -29,7 +29,7 @@ jobs:
       id: check-branch
       run: |
         if [[ ${REF_NAME} == cryostat-v* ]]; then
-          echo "image-tag=${REF_NAME:10}" >> $GITHUB_OUTPUT
+          echo "image-tag=${REF_NAME:10}-dev" >> $GITHUB_OUTPUT
         else
           echo "image-tag=${REF_NAME}" >> $GITHUB_OUTPUT
         fi
@@ -38,6 +38,8 @@ jobs:
       run: |
         output=$(git describe --tags --exact-match 2>/dev/null || echo -n '')
         echo "::set-output name=image-tag::$output"
+        echo "::set-output name=image-tag-patch::${output:0:3}"
+        echo "::set-output name=image-tag-release::${output:0:1}"
     - name: Build container images and manifest
       id: buildah-build
       uses: redhat-actions/buildah-build@v2

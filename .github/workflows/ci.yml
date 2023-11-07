@@ -34,7 +34,7 @@ jobs:
           echo "image-tag=${REF_NAME}" >> $GITHUB_OUTPUT
         fi
     - name: Check commit git tag
-      id: commit-tag
+      id: check-commit
       run: |
         output=$(git describe --tags --exact-match 2>/dev/null || echo -n '')
         echo "::set-output name=image-tag::$output"
@@ -46,7 +46,7 @@ jobs:
       with:
         image: ${{ env.CRYOSTAT_GRAFANA_IMG }}
         archs: amd64, arm64
-        tags: ${{ steps.check-branch.outputs.image-tag }} ${{ github.ref == 'refs/heads/main' && 'latest' || '' }} ${{ steps.commit-tag.outputs.image-tag }}
+        tags: ${{ steps.check-branch.outputs.image-tag }} ${{ github.ref == 'refs/heads/main' && 'latest' || '' }} ${{ steps.check-commit.outputs.image-tag }} ${{ steps.check-commit.outputs.image-tag-patch }} ${{ steps.check-commit.outputs.image-tag-release }}
         containerfiles: |
           ./Dockerfile
     - name: Push to quay.io

@@ -29,22 +29,24 @@ jobs:
       id: check-branch
       run: |
         if [[ ${REF_NAME} == cryostat-v* ]]; then
-          echo "image-tag=${REF_NAME:10}" >> $GITHUB_OUTPUT
+          echo "image-tag=${REF_NAME:10}-dev" >> $GITHUB_OUTPUT
         else
           echo "image-tag=${REF_NAME}" >> $GITHUB_OUTPUT
         fi
     - name: Check commit git tag
-      id: commit-tag
+      id: check-commit
       run: |
         output=$(git describe --tags --exact-match 2>/dev/null || echo -n '')
         echo "::set-output name=image-tag::$output"
+        echo "::set-output name=image-tag-patch::${output:0:3}"
+        echo "::set-output name=image-tag-release::${output:0:1}"
     - name: Build container images and manifest
       id: buildah-build
       uses: redhat-actions/buildah-build@v2
       with:
         image: ${{ env.CRYOSTAT_GRAFANA_IMG }}
         archs: amd64, arm64
-        tags: ${{ steps.check-branch.outputs.image-tag }} ${{ github.ref == 'refs/heads/main' && 'latest' || '' }} ${{ steps.commit-tag.outputs.image-tag }}
+        tags: ${{ steps.check-branch.outputs.image-tag }} ${{ github.ref == 'refs/heads/main' && 'latest' || '' }} ${{ steps.check-commit.outputs.image-tag }}
         containerfiles: |
           ./Dockerfile
     - name: Push to quay.io

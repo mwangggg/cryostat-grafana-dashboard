@@ -36,7 +36,7 @@ jobs:
     - name: Check commit git tag
       id: check-commit
       run: |
-        output=$(git describe --tags --exact-match 2>/dev/null || echo -n '')
+        output=$(git describe --tags --exact-match 2>/dev/null | sed -e "s/^v//" || echo -n '')
         echo "::set-output name=image-tag::$output"
         echo "::set-output name=image-tag-patch::${output:0:3}"
         echo "::set-output name=image-tag-release::${output:0:1}"
